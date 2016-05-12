@@ -1,0 +1,73 @@
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+                      http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0"
+         metadata-complete="true">
+
+    <description>
+        daylidovich: Travel agency
+    </description>
+
+    <display-name>Travel agency</display-name>
+
+    <servlet>
+        <servlet-name>Registry</servlet-name>
+        <servlet-class>by.it.servlets.Registry</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Registry</servlet-name>
+        <url-pattern>/registry</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CreateTour</servlet-name>
+        <servlet-class>by.it.servlets.CreateTour</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CreateTour</servlet-name>
+        <url-pattern>/createtour</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Discount</servlet-name>
+        <servlet-class>by.it.servlets.Discount</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Discount</servlet-name>
+        <url-pattern>/discount</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Reserve</servlet-name>
+        <servlet-class>by.it.servlets.Registry</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Reserve</servlet-name>
+        <url-pattern>/reserve</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SelectTour</servlet-name>
+        <servlet-class>by.it.servlets.TourSelect</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SelectTour</servlet-name>
+        <url-pattern>/select</url-pattern>
+    </servlet-mapping>
+
+    <filter>
+        <filter-name>UserFilter</filter-name>
+        <filter-class>by.it.servlets.UserFilter</filter-class>
+        <init-param>
+            <param-name>userFilter</param-name>
+            <param-value>FilterAuth</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>UserFilter</filter-name>
+        <url-pattern>/Reserve.jsp</url-pattern>
+        <url-pattern>/CreateTour.jsp</url-pattern>
+        <url-pattern>/Discount.jsp</url-pattern>
+    </filter-mapping>
+</web-app>

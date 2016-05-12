@@ -1,0 +1,68 @@
+<project name="TravelAgency" default="DeployToXampp" basedir="..">
+    <property file="ant/build.properties"/>
+
+    <path id="classpath">
+        <fileset dir="${lib.dir}" includes="mysql-connector-java-5.1.38.jar" />
+        <fileset dir="${lib.dir}" includes="servlet-api.jar"/>
+    </path>
+    <!-- очистка рабочего каталога -->
+    <target name="01clean">
+        <echo>Cleaning the ${build.dir}</echo>
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <!-- создание рабочего каталога для классов и библиотек -->
+    <target name="02init" depends="01clean">
+        <echo>Creating the build directory</echo>
+        <mkdir dir="${build.dir}/WEB-INF/classes"/>
+        <mkdir dir="${build.dir}/WEB-INF/lib"/>
+    </target>
+
+    <!-- компиляция файлов проекта -->
+    <target name="03compile" depends="02init">
+        <echo>Compile the source files</echo>
+        <javac srcdir="${src.dir}" destdir="${build.dir}/WEB-INF/classes">
+            <classpath  refid="classpath" />
+        </javac>
+    </target>
+
+    <!-- копирование в рабочую директорию -->
+    <target name="04copy" depends="03compile">
+        <copy todir="${build.dir}/WEB-INF">
+            <fileset dir="${conf.dir}"/>
+        </copy>
+        <copy todir="${build.dir}">
+            <fileset dir="${web.content}"/>
+        </copy>
+        <copy todir="${build.dir}/WEB-INF/lib">
+            <fileset dir="${lib.dir}"/>
+        </copy>
+    </target>
+
+    <!-- формирование war-сборки (архивация) -->
+    <target name="05war" depends="04copy">
+        <echo>Building the war file</echo>
+        <war destfile="${dist.dir}/${web.root}.war" webxml="${build.dir}/WEB-INF/web.xml">
+            <fileset dir="${build.dir}"/>
+        </war>
+    </target>
+
+    <!-- повторная очистка рабочего каталога -->
+    <target name="06finalize" depends="05war">
+        <echo>Cleaning the ${build.dir}</echo>
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <!-- копирование в каталог Tomcat -->
+    <target name="DeployToXampp" depends="06finalize">
+        <echo>Cleaning the ${tomcat.webapps}/${web.root}</echo>
+        <delete dir="${tomcat.webapps}/${web.root}"/>
+
+        <echo>Deploy ${tomcat.webapps}/${web.root}.war</echo>
+        <copy todir="${tomcat.webapps}">
+            <fileset file="${dist.dir}/${web.root}.war"/>
+        </copy>
+    </target>
+
+
+</project>
